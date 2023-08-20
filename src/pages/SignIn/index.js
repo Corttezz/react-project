@@ -5,16 +5,20 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 
 import * as Animatable from "react-native-animatable";
-
 import { useNavigation } from "@react-navigation/native";
-
 import { Ionicons } from "@expo/vector-icons";
+import axios from 'axios';
 
 export default function SignIn() {
   const navigation = useNavigation();
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const handleButtonClick = () => {
     navigation.reset({
@@ -23,11 +27,26 @@ export default function SignIn() {
     });
   };
 
-  const [password, setPassword] = React.useState("");
-  const [showPassword, setShowPassword] = React.useState(false);
-
   const handleTogglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword); // Inverter o valor de showPassword
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const validateCredentials = async () => {
+    try {
+      const response = await axios.post('http://192.168.15.31:3000/login', {
+        email: email,
+        password: password
+      });
+
+      if (response.status === 200) {
+        handleButtonClick();
+      } else {
+        Alert.alert("Erro", response.data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Erro", "Erro ao tentar autenticar. Por favor, tente novamente.");
+    }
   };
 
   return (
@@ -42,7 +61,12 @@ export default function SignIn() {
 
       <Animatable.View animation="fadeInUp" style={styles.conteinerForm}>
         <Text style={styles.title}>Email</Text>
-        <TextInput placeholder="Digite um email..." style={styles.input} />
+        <TextInput 
+          placeholder="Digite um email..." 
+          style={styles.input} 
+          value={email}
+          onChangeText={setEmail}
+        />
 
         <Text style={styles.title}>Senha</Text>
         <View style={styles.passwordInputContainer}>
@@ -65,7 +89,7 @@ export default function SignIn() {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={handleButtonClick} style={styles.button}>
+        <TouchableOpacity onPress={validateCredentials} style={styles.button}>
           <Text style={styles.buttonText}>Acessar</Text>
         </TouchableOpacity>
 
@@ -78,7 +102,6 @@ export default function SignIn() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
