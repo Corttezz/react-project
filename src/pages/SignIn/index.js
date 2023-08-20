@@ -101,8 +101,8 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 28,
-    fontWeight: "bold",
     color: "#FFF",
+    fontFamily: "Poppins_700Bold",
   },
   conteinerForm: {
     backgroundColor: "#FFF",
@@ -116,6 +116,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 28,
     marginBottom: 10,
+    fontFamily: "Poppins_400Regular",
+    
   },
   input: {
     borderBottomWidth: 1,
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Poppins_700Bold",
   },
   buttonRegister: {
     marginTop: 14,
@@ -147,5 +149,6 @@ const styles = StyleSheet.create({
   },
   registerText: {
     color: "#a1a1a1",
+    fontFamily: "Poppins_400Regular",
   },
 });

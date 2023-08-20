@@ -55,12 +55,13 @@ const styles = StyleSheet.create({
     },
     title:{
       fontSize: 24,
-      fontWeight: 'bold',
       marginTop: 28,
-      marginBottom: 12
+      marginBottom: 12,
+      fontFamily: 'Poppins_700Bold',
     },
     text: {
-      color: "#a1a1a1"
+      color: "#a1a1a1",
+      fontFamily: 'Poppins_400Regular',
     },
     button: {
       position: "absolute",
@@ -76,6 +77,6 @@ const styles = StyleSheet.create({
     buttonText: {
       fontSize: 18,
       color: "#FFF",
-      fontWeight: 'bold',
+      fontFamily: 'Poppins_700Bold',
     }
 })

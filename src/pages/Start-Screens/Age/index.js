@@ -1,71 +1,86 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
-
-import * as Animatable from "react-native-animatable"
-
-import { useNavigation } from '@react-navigation/native'
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Age() {
-  const navigation = useNavigation()
-
+  const navigation = useNavigation();
+  const [selectedAge, setSelectedAge] = useState(18); // Starting age
 
   return (
     <View style={styles.container}>
-    
-       <Text style={styles.title}> Age </Text>
 
-       <TouchableOpacity 
-       onPress={ () => navigation.navigate("Weight") }
-       style={styles.button}>
-        <Text style={styles.buttonText}> Acessar </Text>
-       </TouchableOpacity>
+      <View style={styles.header}>
+        <Text style={styles.title}>Qual a sua idade?</Text>
+      </View>
 
+      <View style={styles.ageContainer}>
+        <TouchableOpacity style={styles.changeAgeButton} onPress={() => setSelectedAge(Math.max(0, selectedAge - 1))}>
+          <Text style={styles.buttonText}>-</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.ageText}>{selectedAge}</Text>
+
+        <TouchableOpacity style={styles.changeAgeButton} onPress={() => setSelectedAge(selectedAge + 1)}>
+          <Text style={styles.buttonText}>+</Text>
+        </TouchableOpacity>
+      </View>
+
+      <TouchableOpacity 
+        onPress={() => {/* Do something, maybe navigate to another screen or save the age */}}
+        style={styles.continueButton}
+      >
+        <Text style={styles.buttonText}>Continuar</Text>
+      </TouchableOpacity>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex: 1,
-        backgroundColor: "#20183f"
-    },
-    containerLogo:{
-        flex: 2,
-        backgroundColor: "#20183f",
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    containerForm:{
-        flex: 1,
-        backgroundColor: "#FFF",
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
-        paddingStart: "5%",
-        paddingEnd: "5%"
-    },
-    title:{
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginTop: 28,
-      marginBottom: 12
-    },
-    text: {
-      color: "#a1a1a1"
-    },
-    button: {
-      position: "absolute",
-      backgroundColor: "#20183f",
-      borderRadius: 50,
-      paddingVertical: 8,
-      width: "60%",
-      alignSelf: 'center',
-      bottom: "15%",
-      alignItems: 'center',
-      justifyContent: "center"
-    },
-    buttonText: {
-      fontSize: 18,
-      color: "#FFF",
-      fontWeight: 'bold',
-    }
-})
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+    alignItems: 'center',
+  },
+  header: {
+    marginTop: 50,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    textAlign: 'center',
+    fontFamily: 'Poppins_700Bold',
+  },
+  ageContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  ageText: {
+    fontSize: 50,
+    marginHorizontal: 15,
+    fontFamily: 'Poppins_400Regular',
+  },
+  changeAgeButton: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 25,
+    backgroundColor: '#b6b6b6',
+  },
+  continueButton: {
+    marginTop: 30,
+    width: '90%',
+    padding: 15,
+    borderRadius: 70,
+    backgroundColor: '#20183f',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontFamily: 'Poppins_700Bold',
+  },
+});

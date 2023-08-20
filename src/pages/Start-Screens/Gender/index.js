@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5',
     alignItems: 'center',
+    
   },
   header: {
     marginTop: 50,
@@ -58,12 +59,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: 'Poppins_700Bold',
   },
   subtitle: {
     fontSize: 20,
     marginTop: 10,
+    fontFamily: 'Poppins_400Regular',
   },
   iconContainer: {
     flex: 1,
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 16,
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Poppins_400Regular',
   },
   selected: {
     backgroundColor: '#20183f',
@@ -109,6 +111,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins_700Bold',
   },
 });
