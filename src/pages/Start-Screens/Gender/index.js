@@ -39,7 +39,7 @@ export default function Gender() {
         onPress={() => navigation.navigate("Age")}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>Acessar</Text>
+        <Text style={styles.buttonText}>Continuar</Text>
       </TouchableOpacity>
     </View>
   );
