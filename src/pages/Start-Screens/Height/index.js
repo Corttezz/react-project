@@ -1,15 +1,50 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import * as Animatable from "react-native-animatable"
+import * as Animatable from "react-native-animatable";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { ActivityIndicator } from "react-native-paper";
 
 export default function Height() {
   const navigation = useNavigation();
-  const [selectedHeight, setSelectedHeight] = useState(170); // Starting height
+  const [selectedHeight, setSelectedHeight] = useState(170); // Starting weight
+  const [loading, setLoading] = useState(false);
 
+  const updateHeightInDatabase = async () => {
+    setLoading(true);
+    try {
+      const userId = await AsyncStorage.getItem('userId'); // Recupere o userId do AsyncStorage
+      const token = await AsyncStorage.getItem('userToken'); // Recupere o token JWT do AsyncStorage
+
+      const response = await axios.put(`https://backend-server-inteligym.azurewebsites.net/updateHeight/${userId}`, {
+        height: selectedHeight
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}` // Inclua o token JWT no cabeçalho da solicitação
+        }
+      });
+  
+      if (response.status === 200) {
+        navigation.navigate("Goal");
+      } else {
+        console.error("Erro ao atualizar a altura.");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer a solicitação:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <View style={styles.container}>
-
+{loading && (
+          <View style={styles.loadingOverlay}>
+            <View style={styles.whiteBox}>
+              <ActivityIndicator size="large" color="#20183ff" />
+            </View>
+          </View>
+        )}
       <Animatable.View delay={200} animation="fadeInDown" style={styles.iconContainer}>
         <View style={styles.header}>
           <Text style={styles.title}>Qual a sua altura?</Text>
@@ -39,7 +74,7 @@ export default function Height() {
           <Text style={styles.buttonTextBack}>Voltar</Text>
         </TouchableOpacity>
         <TouchableOpacity 
-          onPress={() => {navigation.navigate('Goal')}}
+          onPress={updateHeightInDatabase}
           style={styles.continueButton}
         >
           <Text style={styles.buttonTextContinue}>Continuar</Text>
@@ -72,6 +107,24 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontFamily: 'Poppins_400Regular',
     textAlign: 'center',
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.3)", // você pode usar um fundo translúcido
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 9999,
+  },
+  whiteBox: {
+    backgroundColor: "#FFFFFF",
+    padding: 40,
+    borderRadius: 10,
+    elevation: 10, // para Android
+    //shadowColor, shadowOffset, shadowOpacity, shadowRadius // para iOS se necessário
   },
   heightContainer: {
     flexDirection: 'row',

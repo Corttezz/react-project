@@ -7,11 +7,12 @@ import {
   TextInput,
   Alert,
 } from "react-native";
-
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import axios from 'axios';
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ActivityIndicator } from "react-native-paper";
 
 export default function SignIn() {
   const navigation = useNavigation();
@@ -19,38 +20,82 @@ export default function SignIn() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
-  const handleButtonClick = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Gender" }],
-    });
-  };
+  
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const validateCredentials = async () => {
-    try {
-      const response = await axios.post('http://192.168.15.31:3000/login', {
-        email: email,
-        password: password
-      });
+// navigation.navigate("NavRoutes"); 
 
-      if (response.status === 200) {
-        handleButtonClick();
-      } else {
-        Alert.alert("Erro", response.data.message);
+const validateCredentials = async () => {
+  setLoading(true);
+  try {
+    const response = await axios.post(
+      "https://backend-server-inteligym.azurewebsites.net/login",
+      {
+        email: email,
+        password: password,
       }
-    } catch (err) {
-      console.error(err);
-      Alert.alert("Erro", "Erro ao tentar autenticar. Por favor, tente novamente.");
+    );
+
+    if (response.status === 200 && response.data.token) {
+      await AsyncStorage.setItem("userToken", response.data.token);
+      await AsyncStorage.setItem("userId", response.data.userId.toString());
+      const userToken = await AsyncStorage.getItem("userToken");
+      const userId = await AsyncStorage.getItem("userId");
+      console.log("Token do usuário:", userToken);
+      console.log("Id do usuário:", userId);
+
+      // Agora, verifique o valor do isRegistred antes de redirecionar
+      const isRegistredResponse = await axios.get(
+        `https://backend-server-inteligym.azurewebsites.net/getIsRegistred/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+
+          },
+        }
+      );
+
+      if (isRegistredResponse.status === 200) {
+        console.log("Status de registro:", isRegistredResponse.data);
+        const isRegistred = isRegistredResponse.data.isRegistred;
+        if (isRegistred === true) {
+          navigation.navigate("NavRoutes");
+        } else {
+          navigation.navigate("Gender");
+        }
+      } else {
+        Alert.alert("Erro", "Erro ao buscar status de registro.");
+      }
+    } else {
+      Alert.alert("Erro", response.data.message);
     }
-  };
+  } catch (err) {
+    console.error(err);
+    Alert.alert("Erro", "Erro ao tentar autenticar. Por favor, tente novamente.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+  // verificar se isLoading é true, se for true levar para navigation.navigate("NavRoutes"); 
+  // se não for true leva
 
   return (
     <View style={styles.container}>
+      {/* Se loading for true, mostra o ActivityIndicator */}
+      {loading && (
+          <View style={styles.loadingOverlay}>
+            <View style={styles.whiteBox}>
+              <ActivityIndicator size="large" color="#20183ff" />
+            </View>
+          </View>
+        )}
       <Animatable.View
         animation="fadeInLeft"
         delay={500}
@@ -60,10 +105,12 @@ export default function SignIn() {
       </Animatable.View>
 
       <Animatable.View animation="fadeInUp" style={styles.conteinerForm}>
+        
+
         <Text style={styles.title}>Email</Text>
-        <TextInput 
-          placeholder="Digite um email..." 
-          style={styles.input} 
+        <TextInput
+          placeholder="Digite um email..."
+          style={styles.input}
           value={email}
           onChangeText={setEmail}
         />
@@ -108,15 +155,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#20183f",
   },
   passwordInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderBottomWidth: 1,
-    borderColor: 'black',
+    borderColor: "black",
   },
   passwordToggle: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
-    padding: 8,},
+    padding: 8,
+  },
   containerHeader: {
     marginTop: "14%",
     marginBottom: "8%",
@@ -126,6 +174,24 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: "#FFF",
     fontFamily: "Poppins_700Bold",
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.5)", // você pode usar um fundo translúcido
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 9999,
+  },
+  whiteBox: {
+    backgroundColor: "#FFFFFF",
+    padding: 60,
+    borderRadius: 10,
+    elevation: 10, // para Android
+    //shadowColor, shadowOffset, shadowOpacity, shadowRadius // para iOS se necessário
   },
   conteinerForm: {
     backgroundColor: "#FFF",
@@ -140,7 +206,6 @@ const styles = StyleSheet.create({
     marginTop: 28,
     marginBottom: 10,
     fontFamily: "Poppins_400Regular",
-    
   },
   input: {
     borderBottomWidth: 1,
@@ -151,7 +216,8 @@ const styles = StyleSheet.create({
   inputSenha: {
     height: 40,
     marginBottom: 1,
-    fontSize: 16},
+    fontSize: 16,
+  },
   button: {
     backgroundColor: "#20183f",
     width: "100%",

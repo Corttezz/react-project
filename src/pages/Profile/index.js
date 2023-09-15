@@ -6,29 +6,39 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ActivityIndicator } from "react-native-paper";
+import { Picker } from "@react-native-picker/picker";
 import * as Animatable from "react-native-animatable";
 
 const ProfileScreen = () => {
+  // Estado inicial dos dados do usuário
   const initialUserData = {
-    name: "Nome do Usuário",
-    age: 24,
-    height: "1,75m",
-    weight: "70kg",
-    sex: "Masculino",
+    nome: "",
+    age: "",
+    height: "",
+    weight: "",
+    gender: "",
     profileImage: require("../../assets/_de67bbc7-b7e3-49da-b3a7-cec4008ce881.jpg"),
   };
 
   const [userData, setUserData] = useState(initialUserData);
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  // Pedir permissões e buscar dados iniciais quando o componente é montado
   useEffect(() => {
     getPermissionsAsync();
+    fetchUserData();
   }, []);
 
+  // Pedir permissão para acessar a galeria de fotos
   const getPermissionsAsync = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -36,8 +46,52 @@ const ProfileScreen = () => {
     }
   };
 
+  // Buscar dados do usuário
+  const fetchUserData = async () => {
+    try {
+      setLoading(true);
+      const userId = await AsyncStorage.getItem("userId");
+      const token = await AsyncStorage.getItem("userToken");
+
+      const response = await axios.get(
+        `http://192.168.15.31:3000/getUserData/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        updateStateWithUserData(response.data);
+      } else {
+        console.error("Erro ao buscar os dados do usuário.");
+      }
+    } catch (error) {
+      console.error("Erro na solicitação:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateStateWithUserData = (data) => {
+    const profileImageUri = data.imageUrl
+      ? { uri: data.imageUrl }
+      : require("../../assets/_de67bbc7-b7e3-49da-b3a7-cec4008ce881.jpg");
+
+    setUserData({
+      ...userData,
+      nome: data.nome,
+      age: data.age,
+      height: data.height,
+      weight: data.weight,
+      gender: data.gender === "Feminino" ? "Feminino" : "Masculino",
+      profileImage: profileImageUri,
+    });
+  };
+
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
@@ -45,118 +99,302 @@ const ProfileScreen = () => {
     });
 
     if (!result.canceled) {
-      setUserData({ ...userData, profileImage: { uri: result.assets[0].uri } });
+      setUserData({ ...userData, profileImage: { uri: result.uri } });
     }
   };
 
-  const handleSave = () => {
+ const updateNome = async () => {
+    try {
+      const userId = await AsyncStorage.getItem("userId");
+      const token = await AsyncStorage.getItem("userToken");
+
+      const response = await axios.put(
+        `http://
+        :3000/updateNome/${userId}`,
+        {
+          nome: userData.nome,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Nome atualizado com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar o nome:", error);
+    }
+  };
+
+
+  const updateGender = async () => {
+    try {
+      const userId = await AsyncStorage.getItem("userId");
+      const token = await AsyncStorage.getItem("userToken");
+
+      const response = await axios.put(
+        `http://192.168.15.31:3000/updateGender/${userId}`,
+        { gender: userData.gender },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Gênero atualizado com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar o gênero:", error);
+    }
+  };
+
+  const updateAge = async () => {
+    try {
+      const userId = await AsyncStorage.getItem("userId");
+      const token = await AsyncStorage.getItem("userToken");
+
+      const response = await axios.put(
+        `http://192.168.15.31:3000/updateAge/${userId}`,
+        { age: userData.age },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Idade atualizada com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar a idade:", error);
+    }
+  };
+
+  const updateWeight = async () => {
+    try {
+      const userId = await AsyncStorage.getItem("userId");
+      const token = await AsyncStorage.getItem("userToken");
+
+      const response = await axios.put(
+        `http://192.168.15.31:3000/updateWeight/${userId}`,
+        { weight: parseFloat(userData.weight.replace(",", ".")) },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Peso atualizado com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar o peso:", error);
+    }
+  };
+
+  const updateHeight = async () => {
+    try {
+      const userId = await AsyncStorage.getItem("userId");
+      const token = await AsyncStorage.getItem("userToken");
+
+      const response = await axios.put(
+        `http://192.168.15.31:3000/updateHeight/${userId}`,
+        { height: parseFloat(userData.height.replace(",", ".")) },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Altura atualizada com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar a altura:", error);
+    }
+  };
+
+  const handleSave = async () => {
     setIsEditing(false);
-    console.log("Dados atualizados:", userData);
+    await updateNome();
+    await updateGender();
+    await updateAge();
+    await updateWeight();
+    await updateHeight();
+    await fetchUserData();
   };
 
   const handleEditPress = () => {
-    if (!isEditing) {
-      setIsEditing(true);
-    }
+    setIsEditing(!isEditing);
   };
 
   return (
-    <View style={styles.title}>
-      <Text style={styles.titleText}> Meu Perfil </Text>
-      <View style={styles.container}>
-        <View style={styles.profileImageContainer}>
-          <TouchableOpacity onPress={isEditing ? pickImage : null}>
-            <Animatable.Image
-              animation="flipInX"
-              source={userData.profileImage}
-              style={styles.profileImage}
-            />
-            {isEditing && (
-              <View style={styles.editIconContainer}>
-                <AntDesign name="edit" size={48} color="black" />
-              </View>
-            )}
-          </TouchableOpacity>
-        </View>
-        <Animatable.View
-          animation="fadeInLeft"
-          delay={500}
-          style={styles.containerHeader}
-        >
-          <Text style={styles.username}>{userData.name}</Text>
-        </Animatable.View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputTitle}>Idade</Text>
-          <TextInput
-            style={styles.input}
-            value={userData.age.toString()}
-            onChangeText={(text) =>
-              setUserData({ ...userData, age: parseInt(text) })
-            }
-            keyboardType="numeric"
-            placeholder="Idade"
-            editable={isEditing}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputTitle}>Altura</Text>
-          <TextInput
-            style={styles.input}
-            value={userData.height}
-            onChangeText={(text) => setUserData({ ...userData, height: text })}
-            placeholder="Altura"
-            editable={isEditing}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputTitle}>Peso</Text>
-          <TextInput
-            style={styles.input}
-            value={userData.weight}
-            onChangeText={(text) => setUserData({ ...userData, weight: text })}
-            placeholder="Peso"
-            editable={isEditing}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputTitle}>Sexo</Text>
-          <TextInput
-            style={styles.input}
-            value={userData.sex}
-            onChangeText={(text) => setUserData({ ...userData, sex: text })}
-            placeholder="Sexo"
-            editable={isEditing}
-          />
-        </View>
-        {!isEditing && (
-          <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
-            <AntDesign name="edit" size={24} color="#51766d" />
-          </TouchableOpacity>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.title}>
+        {/* Se loading for true, mostra o ActivityIndicator */}
+        {loading && (
+          <View style={styles.loadingOverlay}>
+            <View style={styles.whiteBox}>
+              <ActivityIndicator size="large" color="#20183ff" />
+            </View>
+          </View>
         )}
-        {isEditing && (
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.saveButtonText}>Salvar</Text>
-          </TouchableOpacity>
-        )}
-
-        {!isEditing && (
-          <Animatable.View animation="fadeInUp">
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}> Minhas Metas </Text>
-          </TouchableOpacity>
+        <Text style={styles.titleText}> Meu Perfil </Text>
+        <View style={styles.container}>
+          <View style={styles.profileImageContainer}>
+            <TouchableOpacity onPress={isEditing ? pickImage : null}>
+              <Animatable.Image
+                animation="flipInX"
+                source={userData.profileImage}
+                onLoad={() =>
+                  console.log(
+                    "Imagem carregada com a URI:",
+                    userData.profileImage
+                  )
+                } // <-- Adicione este log
+                onError={(e) => console.log("Erro ao carregar imagem:", e)} // <-- Adicione este log para capturar erros
+                style={styles.profileImage}
+              />
+              {isEditing && (
+                <View style={styles.editIconContainer}>
+                  <AntDesign name="edit" size={48} color="black" />
+                </View>
+              )}
+            </TouchableOpacity>
+          </View>
+          <Animatable.View
+            animation="fadeInLeft"
+            delay={500}
+            style={styles.containerHeader}
+          >
+            <Text style={styles.username}>{userData.nome}</Text>
           </Animatable.View>
-        )}
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputTitle}>Nome</Text>
+            <TextInput
+              style={styles.input}
+              value={userData.nome}
+              onChangeText={(text) =>
+                setUserData({ ...userData, nome: text })
+              }
+              keyboardType="text"
+              placeholder="Nome"
+              editable={isEditing}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputTitle}>Idade</Text>
+            <TextInput
+              style={styles.input}
+              value={userData.age.toString()}
+              onChangeText={(text) =>
+                setUserData({ ...userData, age: parseInt(text) })
+              }
+              keyboardType="numeric"
+              placeholder="Idade"
+              editable={isEditing}
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputTitle}>Altura (cm)</Text>
+            <TextInput
+              style={styles.input}
+              value={userData.height.toString()}
+              onChangeText={(text) =>
+                setUserData({ ...userData, height: text })
+              }
+              placeholder="Altura"
+              keyboardType="numeric"
+              editable={isEditing}
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputTitle}>Peso (kg)</Text>
+            <TextInput
+              style={styles.input}
+              value={userData.weight.toString()}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                setUserData({ ...userData, weight: text })
+              }
+              placeholder="Peso"
+              editable={isEditing}
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputTitle}>Sexo</Text>
+            {isEditing ? (
+              <Picker
+                selectedValue={userData.gender} // <-- Use "userData.gender"
+                style={styles.input}
+                onValueChange={(value) => {
+                  setUserData({ ...userData, gender: value });
+                }}
+                editable={isEditing}
+              >
+                <Picker.Item
+                  label="Masculino"
+                  value="Masculino"
+                  editable={isEditing}
+                />
+                <Picker.Item
+                  label="Feminino"
+                  value="Feminino"
+                  editable={isEditing}
+                />
+              </Picker>
+            ) : (
+              <TextInput style={styles.input}>{userData.gender}</TextInput>
+            )}
+          </View>
+
+          {!isEditing && (
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={handleEditPress}
+            >
+              <AntDesign name="edit" size={24} color="#20183f" />
+            </TouchableOpacity>
+          )}
+          {isEditing && (
+            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+              <Text style={styles.saveButtonText}>Salvar</Text>
+            </TouchableOpacity>
+          )}
+
+          {!isEditing && (
+            <Animatable.View animation="fadeInUp">
+              <TouchableOpacity style={styles.button}>
+                <Text
+                  style={styles.buttonText}
+                  onPress={console.log("Minhas Metas")}
+                >
+                  {" "}
+                  Minhas Metas{" "}
+                </Text>
+              </TouchableOpacity>
+            </Animatable.View>
+          )}
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   title: {
-    backgroundColor: "#51766d",
+    backgroundColor: "#20183f",
   },
   titleText: {
     color: "#F2F2F2",
@@ -165,6 +403,24 @@ const styles = StyleSheet.create({
     paddingBottom: "5%",
     fontSize: 20,
     fontWeight: "bold",
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.5)", // você pode usar um fundo translúcido
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 9999,
+  },
+  whiteBox: {
+    backgroundColor: "#FFFFFF",
+    padding: 60,
+    borderRadius: 10,
+    elevation: 10, // para Android
+    //shadowColor, shadowOffset, shadowOpacity, shadowRadius // para iOS se necessário
   },
   container: {
     alignItems: "center",
@@ -182,21 +438,22 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    marginBottom: 20,
-    marginTop: "5%",
+    marginTop: "1%",
   },
   profileImage: {
     width: "100%",
     height: "100%",
   },
   inputContainer: {
+    width: "100%",
+    height: 50,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 10,
     backgroundColor: "white",
     paddingRight: "5%",
-    borderRadius: 10,
+    borderRadius: 15,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -228,7 +485,7 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: "10%",
+    marginBottom: "2%",
   },
   input: {
     width: "50%",
@@ -247,7 +504,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   saveButton: {
-    backgroundColor: "#51766d",
+    backgroundColor: "#20183f",
     padding: 10,
     borderRadius: 5,
     marginTop: "10%",
@@ -259,7 +516,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   button: {
-    backgroundColor: "#51766d",
+    backgroundColor: "#20183f",
     width: "80%",
     padding: 20,
     borderRadius: 10,
@@ -281,7 +538,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingRight: 20,
     paddingLeft: 20,
-    },
+  },
 });
 
 export default ProfileScreen;
