@@ -54,7 +54,7 @@ const ProfileScreen = () => {
       const token = await AsyncStorage.getItem("userToken");
 
       const response = await axios.get(
-        `http://192.168.15.31:3000/getUserData/${userId}`,
+        `https://backend-server-inteligym.azurewebsites.net/getUserData/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -109,8 +109,7 @@ const ProfileScreen = () => {
       const token = await AsyncStorage.getItem("userToken");
 
       const response = await axios.put(
-        `http://
-        :3000/updateNome/${userId}`,
+        `https://backend-server-inteligym.azurewebsites.net/updateNome/${userId}`,
         {
           nome: userData.nome,
         },
@@ -136,7 +135,7 @@ const ProfileScreen = () => {
       const token = await AsyncStorage.getItem("userToken");
 
       const response = await axios.put(
-        `http://192.168.15.31:3000/updateGender/${userId}`,
+        `https://backend-server-inteligym.azurewebsites.net/updateGender/${userId}`,
         { gender: userData.gender },
         {
           headers: {
@@ -159,7 +158,7 @@ const ProfileScreen = () => {
       const token = await AsyncStorage.getItem("userToken");
 
       const response = await axios.put(
-        `http://192.168.15.31:3000/updateAge/${userId}`,
+        `https://backend-server-inteligym.azurewebsites.net/updateAge/${userId}`,
         { age: userData.age },
         {
           headers: {
@@ -182,7 +181,7 @@ const ProfileScreen = () => {
       const token = await AsyncStorage.getItem("userToken");
 
       const response = await axios.put(
-        `http://192.168.15.31:3000/updateWeight/${userId}`,
+        `https://backend-server-inteligym.azurewebsites.net/updateWeight/${userId}`,
         { weight: parseFloat(userData.weight.replace(",", ".")) },
         {
           headers: {
@@ -195,7 +194,7 @@ const ProfileScreen = () => {
         console.log("Peso atualizado com sucesso!");
       }
     } catch (error) {
-      console.error("Erro ao atualizar o peso:", error);
+      console.log("Erro ao atualizar o peso:", error);
     }
   };
 
@@ -205,7 +204,7 @@ const ProfileScreen = () => {
       const token = await AsyncStorage.getItem("userToken");
 
       const response = await axios.put(
-        `http://192.168.15.31:3000/updateHeight/${userId}`,
+        `https://backend-server-inteligym.azurewebsites.net/updateHeight/${userId}`,
         { height: parseFloat(userData.height.replace(",", ".")) },
         {
           headers: {
@@ -218,7 +217,7 @@ const ProfileScreen = () => {
         console.log("Altura atualizada com sucesso!");
       }
     } catch (error) {
-      console.error("Erro ao atualizar a altura:", error);
+      console.log("Erro ao atualizar a altura:", error);
     }
   };
 
@@ -275,7 +274,7 @@ const ProfileScreen = () => {
             delay={500}
             style={styles.containerHeader}
           >
-            <Text style={styles.username}>{userData.nome}</Text>
+          
           </Animatable.View>
           <View style={styles.inputContainer}>
             <Text style={styles.inputTitle}>Nome</Text>
@@ -439,6 +438,7 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 75,
     marginTop: "1%",
+    marginBottom: "7%"
   },
   profileImage: {
     width: "100%",
