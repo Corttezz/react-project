@@ -222,6 +222,7 @@ const ProfileScreen = () => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     setIsEditing(false);
     await updateNome();
     await updateGender();
@@ -229,6 +230,7 @@ const ProfileScreen = () => {
     await updateWeight();
     await updateHeight();
     await fetchUserData();
+    setLoading(false);
   };
 
   const handleEditPress = () => {
@@ -372,19 +374,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           )}
 
-          {!isEditing && (
-            <Animatable.View animation="fadeInUp">
-              <TouchableOpacity style={styles.button}>
-                <Text
-                  style={styles.buttonText}
-                  onPress={console.log("Minhas Metas")}
-                >
-                  {" "}
-                  Minhas Metas{" "}
-                </Text>
-              </TouchableOpacity>
-            </Animatable.View>
-          )}
+          
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -398,8 +388,8 @@ const styles = StyleSheet.create({
   titleText: {
     color: "#F2F2F2",
     paddingLeft: "5%",
-    paddingTop: "5%",
-    paddingBottom: "5%",
+    paddingTop: "2%",
+    paddingBottom: "2%",
     fontSize: 20,
     fontWeight: "bold",
   },
@@ -437,7 +427,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    marginTop: "1%",
+    marginTop: "0%",
     marginBottom: "7%"
   },
   profileImage: {
@@ -507,7 +497,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#20183f",
     padding: 10,
     borderRadius: 5,
-    marginTop: "10%",
+    marginTop: "1%",
     width: "100%",
   },
   saveButtonText: {
