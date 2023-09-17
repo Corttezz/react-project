@@ -286,7 +286,7 @@ const ProfileScreen = () => {
               onChangeText={(text) =>
                 setUserData({ ...userData, nome: text })
               }
-              keyboardType="text"
+              keyboardType="default"
               placeholder="Nome"
               editable={isEditing}
             />
@@ -356,7 +356,7 @@ const ProfileScreen = () => {
                 />
               </Picker>
             ) : (
-              <TextInput style={styles.input}>{userData.gender}</TextInput>
+              <TextInput style={styles.input} editable={isEditing}>{userData.gender}</TextInput>
             )}
           </View>
 
@@ -371,6 +371,11 @@ const ProfileScreen = () => {
           {isEditing && (
             <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
               <Text style={styles.saveButtonText}>Salvar</Text>
+            </TouchableOpacity>
+          )}
+          {!isEditing && (
+            <TouchableOpacity style={styles.metaButton}>
+              <Text style={styles.saveButtonText}>Minhas Metas</Text>
             </TouchableOpacity>
           )}
 
@@ -498,6 +503,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginTop: "1%",
+    width: "100%",
+  },
+  metaButton: {
+    backgroundColor: "#20183f",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: "4%",
     width: "100%",
   },
   saveButtonText: {
