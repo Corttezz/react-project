@@ -396,7 +396,6 @@ const styles = StyleSheet.create({
     paddingTop: "2%",
     paddingBottom: "2%",
     fontSize: 20,
-    fontWeight: "bold",
     fontFamily: "Poppins_700Bold",
   },
   loadingOverlay: {
@@ -465,7 +464,6 @@ const styles = StyleSheet.create({
     paddingBottom: "1%",
     fontSize: 15,
     color: "black",
-    fontWeight: "bold",
     fontFamily: "Poppins_700Bold",
   },
   editIconContainer: {
@@ -541,7 +539,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 18,
-    fontWeight: "bold",
     paddingRight: 20,
     paddingLeft: 20,
     fontFamily: "Poppins_700Bold",

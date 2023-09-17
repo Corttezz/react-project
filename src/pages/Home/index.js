@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView
 } from "react-native";
+import { Platform } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
@@ -68,13 +69,20 @@ const HomeScreen = () => {
     setUserData({
       ...userData,
       nome: data.nome,
+      age: data.age,
+      height: data.height,
+      weight: data.weight,
     });
   };
 
+  const calculcarIMC = () => {
+    const altura = userData.height/100;
+    const imc = userData.weight / (altura * altura );
+    return imc.toFixed(2);
+  }
 
 
-
-
+const IMC = calculcarIMC();
 
 
 
@@ -97,12 +105,13 @@ const HomeScreen = () => {
 
           <View style={styles.row}>
             <TouchableOpacity style={styles.optionIMC}>
-              <Text>Treinos</Text>
-              <Text>bla bla bla</Text>
+              <Text style={styles.optionTitle}>IMC</Text>
+              <Text style={styles.optionDescription}>Seu IMC atual é:</Text>
+              <Text style={styles.IMCtext}> {IMC} </Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.optionTreinos}>
-              <Text>Treinos</Text>
+              <Text style={styles.optionTitle}>Treinos</Text>
               <Text>bla bla bla</Text>
             </TouchableOpacity>
           </View>
@@ -110,12 +119,12 @@ const HomeScreen = () => {
 
           <View style={styles.row}>
             <TouchableOpacity style={styles.optionDiet}>
-              <Text>Treinos</Text>
+            <Text style={styles.optionTitle}>Treinos</Text>
               <Text>bla bla bla</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.optionCronometer}>
-              <Text>Treinos</Text>
+            <Text style={styles.optionTitle}>Treinos</Text>
               <Text>bla bla bla</Text>
             </TouchableOpacity>
           </View>
@@ -123,12 +132,12 @@ const HomeScreen = () => {
           
           <View style={styles.row}>
             <TouchableOpacity style={styles.optionMetas}>
-              <Text>Treinos</Text>
+            <Text style={styles.optionTitle}>Treinos</Text>
               <Text>bla bla bla</Text>
             
             </TouchableOpacity>
             <TouchableOpacity style={styles.optionSequency}>
-              <Text>Treinos</Text>
+            <Text style={styles.optionTitle}>Treinos</Text>
               <Text>bla bla bla</Text>
             </TouchableOpacity>
           </View>
@@ -150,7 +159,14 @@ const styles = StyleSheet.create({
     paddingTop: "3%",
     paddingBottom: "3%",
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "Poppins_700Bold",
+  },
+  optionTitle: {
+    color: "#F2F2F2",
+    fontSize: 20,
+    fontFamily: "Poppins_700Bold",
+    textAlign: "center",
+    marginTop: "10%"
   },
   text: {
     color: "black",
@@ -158,7 +174,7 @@ const styles = StyleSheet.create({
     paddingTop: "4%",
     paddingBottom: "2%",
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "Poppins_700Bold",
   },
   loadingOverlay: {
     position: "absolute",
@@ -190,20 +206,35 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  optionText: {
+  optionDescription: {
     color: "#F2F2F2",
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 15,
+    fontFamily: "Poppins_400Regular",
+    textAlign: "center",
+  },
+  IMCtext: { 
+    color: "#F2F2F2",
+    fontSize: 30,
+    fontFamily: "Poppins_700Bold",
     textAlign: "center",
   },
   optionIMC: {
     width: 150,
     height: 150,
     margin: 10,
-    alignItems: "center",
-    justifyContent: "center",
     borderRadius: 10,
-    backgroundColor: "#20183f",
+    backgroundColor: "green",
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 }, // Aumentando a altura da sombra
+        shadowOpacity: 0.6, // Aumentando a opacidade da sombra
+        shadowRadius: 6, // Aumentando o raio da sombra
+      },
+      android: {
+        elevation: 6, // Aumentando a elevação
+      },
+    }),
   },
   optionTreinos: {
     width: 150,
