@@ -397,6 +397,7 @@ const styles = StyleSheet.create({
     paddingBottom: "2%",
     fontSize: 20,
     fontWeight: "bold",
+    fontFamily: "Poppins_700Bold",
   },
   loadingOverlay: {
     position: "absolute",
@@ -465,6 +466,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "black",
     fontWeight: "bold",
+    fontFamily: "Poppins_700Bold",
   },
   editIconContainer: {
     position: "absolute",
@@ -491,6 +493,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: "center",
     justifyContent: "center",
+    fontFamily: "Poppins_400Regular",
   },
   editButton: {
     marginTop: "10%",
@@ -516,6 +519,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     textAlign: "center",
+    fontFamily: "Poppins_700Bold",
   },
   button: {
     backgroundColor: "#20183f",
@@ -540,6 +544,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingRight: 20,
     paddingLeft: 20,
+    fontFamily: "Poppins_700Bold",
   },
 });
 

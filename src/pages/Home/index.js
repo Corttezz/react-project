@@ -80,53 +80,62 @@ const HomeScreen = () => {
 
 
   return (
-      <View style={styles.title}>
-        {/* Se loading for true, mostra o ActivityIndicator */}
-        {loading && (
-          <View style={styles.loadingOverlay}>
-            <View style={styles.whiteBox}>
-              <ActivityIndicator size="large" color="#20183ff" />
-            </View>
+    <View style={styles.title}>
+      {/* Se loading for true, mostra o ActivityIndicator */}
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <View style={styles.whiteBox}>
+            <ActivityIndicator size="large" color="#20183ff" />
           </View>
-        )}
-        <Text style={styles.titleText}> Home </Text>
-        <View style={styles.container}>
-          <Text style={styles.text}> Seja bem-vindo, {userData.nome} </Text>
+        </View>
+      )}
+      <Text style={styles.titleText}> Home </Text>
+      <View style={styles.container}>
+        <Text style={styles.text}> Seja bem-vindo, {userData.nome} </Text>
+
+        <View style={styles.optionsContainer}>
+
+          <View style={styles.row}>
+            <TouchableOpacity style={styles.optionIMC}>
+              <Text>Treinos</Text>
+              <Text>bla bla bla</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.optionTreinos}>
+              <Text>Treinos</Text>
+              <Text>bla bla bla</Text>
+            </TouchableOpacity>
+          </View>
+
+
+          <View style={styles.row}>
+            <TouchableOpacity style={styles.optionDiet}>
+              <Text>Treinos</Text>
+              <Text>bla bla bla</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.optionCronometer}>
+              <Text>Treinos</Text>
+              <Text>bla bla bla</Text>
+            </TouchableOpacity>
+          </View>
           
-          <View style={styles.optionsContainer}>
-        <View style={styles.row}>
-          <TouchableOpacity style={styles.option}>
-            <Text>Treinos</Text>
-            <Text>bla bla bla</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.option}>
-            <Text>Treinos</Text>
-            <Text>bla bla bla</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.row}>
-          <TouchableOpacity style={styles.option}>
-            <Text>Treinos</Text>
-            <Text>bla bla bla</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.option}>
-            <Text>Treinos</Text>
-            <Text>bla bla bla</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.row}>
-          <TouchableOpacity style={styles.option}>
-            <Text>Treinos</Text>
-            <Text>bla bla bla</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.option}>
-            <Text>Treinos</Text>
-            <Text>bla bla bla</Text>
-          </TouchableOpacity>
+          
+          <View style={styles.row}>
+            <TouchableOpacity style={styles.optionMetas}>
+              <Text>Treinos</Text>
+              <Text>bla bla bla</Text>
+            
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.optionSequency}>
+              <Text>Treinos</Text>
+              <Text>bla bla bla</Text>
+            </TouchableOpacity>
+          </View>
+        
         </View>
       </View>
     </View>
-  </View>
   );
 };
 
@@ -180,7 +189,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  option: {
+
+  optionText: {
+    color: "#F2F2F2",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  optionIMC: {
     width: 150,
     height: 150,
     margin: 10,
@@ -189,13 +205,59 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#20183f",
   },
+  optionTreinos: {
+    width: 150,
+    height: 150,
+    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    backgroundColor: "#20183f",
+  },
+  optionDiet: {
+    width: 150,
+    height: 150,
+    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    backgroundColor: "#20183f",
+  },
+  optionCronometer: {
+    width: 150,
+    height: 150,
+    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    backgroundColor: "#20183f",
+  },
+  optionMetas: {
+    width: 150,
+    height: 150,
+    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    backgroundColor: "#20183f",
+  },
+  optionSequency: {
+    width: 150,
+    height: 150,
+    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    backgroundColor: "#20183f",
+  },
+  
   // container: {
   //   flex: 1,
   //   alignItems: 'center',
   //   justifyContent: 'center',
   //   backgroundColor: 'white',
   // },
-  
+
 });
 
 export default HomeScreen;
