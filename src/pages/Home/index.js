@@ -12,12 +12,15 @@ import { Platform } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
+import { Entypo, Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import * as Animatable from "react-native-animatable";
+import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   // Estado inicial dos dados do usuário
   const initialUserData = {
     nome: "",
@@ -110,9 +113,9 @@ const IMC = calculcarIMC();
               <Text style={styles.IMCtext}> {IMC} </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionTreinos}>
-              <Text style={styles.optionTitle}>Treinos</Text>
-              <Text>bla bla bla</Text>
+            <TouchableOpacity style={styles.optionTreinos} onPress={navigation.navigate("Treinos")}>
+              <Text style={styles.optionTitle}>Seus treinos</Text>
+              <MaterialCommunityIcons style={styles.optionIcon} name="weight-lifter"/>
             </TouchableOpacity>
           </View>
 
@@ -194,7 +197,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     height: "100%",
   },
-
+  optionIcon: {
+    color: "#F2F2F2",
+    fontSize: 45,
+    textAlign: "center",
+    marginTop: "2%"
+  },
   optionsContainer: {
     flexDirection: "column",
     alignItems: "center",
@@ -202,8 +210,6 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
   },
 
   optionDescription: {
@@ -238,48 +244,94 @@ const styles = StyleSheet.create({
   },
   optionTreinos: {
     width: 150,
-    height: 150,
+    height: 120,
     margin: 10,
-    alignItems: "center",
-    justifyContent: "center",
     borderRadius: 10,
-    backgroundColor: "#20183f",
+    backgroundColor: "#cc0000",
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 }, // Aumentando a altura da sombra
+        shadowOpacity: 0.6, // Aumentando a opacidade da sombra
+        shadowRadius: 6, // Aumentando o raio da sombra
+      },
+      android: {
+        elevation: 6, // Aumentando a elevação
+      },
+    }),
   },
   optionDiet: {
     width: 150,
     height: 150,
     margin: 10,
-    alignItems: "center",
-    justifyContent: "center",
     borderRadius: 10,
-    backgroundColor: "#20183f",
+    backgroundColor: "green",
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 }, // Aumentando a altura da sombra
+        shadowOpacity: 0.6, // Aumentando a opacidade da sombra
+        shadowRadius: 6, // Aumentando o raio da sombra
+      },
+      android: {
+        elevation: 6, // Aumentando a elevação
+      },
+    }),
   },
   optionCronometer: {
+    top: -30,
     width: 150,
     height: 150,
     margin: 10,
-    alignItems: "center",
-    justifyContent: "center",
     borderRadius: 10,
-    backgroundColor: "#20183f",
+    backgroundColor: "green",
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 }, // Aumentando a altura da sombra
+        shadowOpacity: 0.6, // Aumentando a opacidade da sombra
+        shadowRadius: 6, // Aumentando o raio da sombra
+      },
+      android: {
+        elevation: 6, // Aumentando a elevação
+      },
+    }),
   },
   optionMetas: {
     width: 150,
     height: 150,
     margin: 10,
-    alignItems: "center",
-    justifyContent: "center",
     borderRadius: 10,
-    backgroundColor: "#20183f",
+    backgroundColor: "green",
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 }, // Aumentando a altura da sombra
+        shadowOpacity: 0.6, // Aumentando a opacidade da sombra
+        shadowRadius: 6, // Aumentando o raio da sombra
+      },
+      android: {
+        elevation: 6, // Aumentando a elevação
+      },
+    }),
   },
   optionSequency: {
     width: 150,
     height: 150,
     margin: 10,
-    alignItems: "center",
-    justifyContent: "center",
     borderRadius: 10,
-    backgroundColor: "#20183f",
+    backgroundColor: "green",
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 }, // Aumentando a altura da sombra
+        shadowOpacity: 0.6, // Aumentando a opacidade da sombra
+        shadowRadius: 6, // Aumentando o raio da sombra
+      },
+      android: {
+        elevation: 6, // Aumentando a elevação
+      },
+    }),
   },
   
   // container: {
