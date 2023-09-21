@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView
 } from "react-native";
+
 import { Platform } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
@@ -79,13 +80,13 @@ const HomeScreen = () => {
   };
 
   const calculcarIMC = () => {
-    const altura = userData.height/100;
-    const imc = userData.weight / (altura * altura );
+    const altura = userData.height / 100;
+    const imc = userData.weight / (altura * altura);
     return imc.toFixed(2);
   }
 
 
-const IMC = calculcarIMC();
+  const IMC = calculcarIMC();
 
 
 
@@ -113,38 +114,41 @@ const IMC = calculcarIMC();
               <Text style={styles.IMCtext}> {IMC} </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionTreinos} onPress={navigation.navigate("Treinos")}>
+            <TouchableOpacity style={styles.optionTreinos} onPress={() => navigation.navigate('Treinos')}>
               <Text style={styles.optionTitle}>Seus treinos</Text>
-              <MaterialCommunityIcons style={styles.optionIcon} name="weight-lifter"/>
+              <MaterialCommunityIcons style={styles.optionIcon} name="weight-lifter" />
             </TouchableOpacity>
           </View>
 
 
           <View style={styles.row}>
             <TouchableOpacity style={styles.optionDiet}>
-            <Text style={styles.optionTitle}>Treinos</Text>
-              <Text>bla bla bla</Text>
+              <Text style={styles.optionTitle}>Dieta</Text>
+              <Text style={styles.IMCtext}>2100 kcal</Text>
             </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.optionCronometer}>
-            <Text style={styles.optionTitle}>Treinos</Text>
-              <Text>bla bla bla</Text>
+
+            <TouchableOpacity style={styles.optionCronometer} onPress={() => navigation.navigate('Cronometro')}>
+              <Text style={styles.optionTitle}>Cronômetro</Text>
+              <MaterialCommunityIcons style={styles.optionIcon} name="timer" />
             </TouchableOpacity>
           </View>
-          
-          
+
+
           <View style={styles.row}>
             <TouchableOpacity style={styles.optionMetas}>
-            <Text style={styles.optionTitle}>Treinos</Text>
-              <Text>bla bla bla</Text>
-            
+              <Text style={styles.optionTitle}>Minhas Metas</Text>
+              <MaterialCommunityIcons style={styles.optionIcon} name="target" />
+
             </TouchableOpacity>
             <TouchableOpacity style={styles.optionSequency}>
-            <Text style={styles.optionTitle}>Treinos</Text>
+              <Text style={styles.optionTitle}>Treinos</Text>
               <Text>bla bla bla</Text>
             </TouchableOpacity>
+            
           </View>
-        
+
+          
+
         </View>
       </View>
     </View>
@@ -204,9 +208,12 @@ const styles = StyleSheet.create({
     marginTop: "2%"
   },
   optionsContainer: {
+    bottom: "8%",
+    flex: 1,
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    
   },
   row: {
     flexDirection: "row",
@@ -218,7 +225,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_400Regular",
     textAlign: "center",
   },
-  IMCtext: { 
+  IMCtext: {
     color: "#F2F2F2",
     fontSize: 30,
     fontFamily: "Poppins_700Bold",
@@ -261,11 +268,11 @@ const styles = StyleSheet.create({
     }),
   },
   optionDiet: {
-    width: 150,
-    height: 150,
+    width: 160,
+    height: 115,
     margin: 10,
     borderRadius: 10,
-    backgroundColor: "green",
+    backgroundColor: "#cc9000",
     ...Platform.select({
       ios: {
         shadowColor: 'black',
@@ -280,11 +287,12 @@ const styles = StyleSheet.create({
   },
   optionCronometer: {
     top: -30,
-    width: 150,
-    height: 150,
+    width: 140,
+    height: 120,
     margin: 10,
     borderRadius: 10,
-    backgroundColor: "green",
+    // quero um azul
+    backgroundColor: "#0900cc",
     ...Platform.select({
       ios: {
         shadowColor: 'black',
@@ -298,11 +306,12 @@ const styles = StyleSheet.create({
     }),
   },
   optionMetas: {
-    width: 150,
-    height: 150,
+    width: 170,
+    height: 120,
     margin: 10,
     borderRadius: 10,
-    backgroundColor: "green",
+    // cor diferente das usadas mas seguindo o mesmo padrçao
+    backgroundColor: "#cc00cc",
     ...Platform.select({
       ios: {
         shadowColor: 'black',
@@ -316,7 +325,8 @@ const styles = StyleSheet.create({
     }),
   },
   optionSequency: {
-    width: 150,
+    top: -30,
+    width: 130,
     height: 150,
     margin: 10,
     borderRadius: 10,
@@ -333,7 +343,7 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  
+
   // container: {
   //   flex: 1,
   //   alignItems: 'center',

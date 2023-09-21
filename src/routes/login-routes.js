@@ -10,6 +10,9 @@ import Goal from "../pages/Start-Screens/Goal";
 import Height from "../pages/Start-Screens/Height";
 import Level from "../pages/Start-Screens/Level";
 import Weight from "../pages/Start-Screens/Weight";
+import Dieta from "../pages/Dashboard-Screens/Dieta";
+import Cronometro from "../pages/Dashboard-Screens/Cronometro";
+import Metas from "../pages/Dashboard-Screens/Metas";
 
 const Stack = createStackNavigator();
 
@@ -65,6 +68,21 @@ export default function Routes(){
             name="NavRoutes"
             component={NavRoutes}
             options={{headerShown: false}}  
+            />
+            <Stack.Screen
+            name="Dieta"  
+            component={Dieta}
+            options={{headerShown: false}}
+            />
+            <Stack.Screen
+            name="Cronometro"
+            component={Cronometro}
+            options={{headerShown: false}}
+            />
+            <Stack.Screen
+            name="Metas"
+            component={Metas}
+            options={{headerShown: false}}
             />
             
         </Stack.Navigator>
