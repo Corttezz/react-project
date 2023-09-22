@@ -1,69 +1,89 @@
-import React, { Component } from 'react';
-import { View, Text, Button } from 'react-native';
-import Timer from 'react-native-timer';
+import React, { useState, useEffect } from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
+import Timer from "react-native-timer";
+import { useNavigation } from "@react-navigation/native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-class Chronometer extends Component {
-  constructor(props) {
-    super(props);
+const Chronometer = () => {
+  const navigation = useNavigation();
 
-    this.state = {
-      startTime: null,
-      currentTime: 0,
-      isRunning: false,
+  const [startTime, setStartTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      Timer.clearInterval(this, "updateTimer");
     };
-  }
+  }, []);
 
-  componentWillUnmount() {
-    Timer.clearInterval(this);
-  }
+  const startChronometer = () => {
+    if (!isRunning) {
+      setIsRunning(true);
+// quero que comece a contar a partir de 0 igual um cro
+      Timer.setInterval(this, "updateTimer", () => {
+        const newTime = 0;
+        setCurrentTime(newTime);
+      }, 10);
+    }
+  };
 
-  startChronometer = () => {
-    this.setState({
-      startTime: new Date(),
-      isRunning: true,
-    });
+  const stopChronometer = () => {
+    Timer.clearInterval(this, "updateTimer");
+    setIsRunning(false);
+  };
 
-    Timer.setInterval(this, 'updateTimer', () => {
-      const currentTime = new Date() - this.state.startTime;
-      this.setState({ currentTime });
-    }, 10);
-  }
+  const resetChronometer = () => {
+    Timer.clearInterval(this, "updateTimer");
+    setStartTime(null);
+    setCurrentTime(0);
+    setIsRunning(false);
+  };
 
-  stopChronometer = () => {
-    Timer.clearInterval(this, 'updateTimer');
-    this.setState({ isRunning: false });
-  }
-
-  resetChronometer = () => {
-    Timer.clearInterval(this, 'updateTimer');
-    this.setState({ startTime: null, currentTime: 0, isRunning: false });
-  }
-
-  formatTime = (time) => {
+  const formatTime = (time) => {
     const minutes = Math.floor(time / (60 * 1000));
     const seconds = Math.floor((time % (60 * 1000)) / 1000);
     const milliseconds = Math.floor((time % 1000) / 10);
 
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(2, '0')}`;
-  }
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}:${String(milliseconds).padStart(2, "0")}`;
+  };
 
-  render() {
-    const { currentTime, isRunning } = this.state;
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Chronometer</Text>
+      <Text style={styles.currentTime}>{formatTime(currentTime)}</Text>
+      {!isRunning ? (
+        <Button title="Start" onPress={startChronometer} />
+      ) : (
+        <Button title="Stop" onPress={stopChronometer} />
+      )}
+      <Button title="Reset" onPress={resetChronometer} />
+      <Button
+        title="Voltar para Home"
+        onPress={() => navigation.navigate("Home")}
+      />
+    </View>
+  );
+};
 
-    return (
-      <View>
-        <Text style={{ fontSize: 30, textAlign: 'center' }}>
-          {this.formatTime(currentTime)}
-        </Text>
-        {!isRunning ? (
-          <Button title="Start" onPress={this.startChronometer} />
-        ) : (
-          <Button title="Stop" onPress={this.stopChronometer} />
-        )}
-        <Button title="Reset" onPress={this.resetChronometer} />
-      </View>
-    );
-  }
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  currentTime: {
+    fontSize: 30,
+    marginBottom: 20,
+  },
+});
 
 export default Chronometer;
