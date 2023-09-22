@@ -22,7 +22,7 @@ const Chronometer = () => {
       setIsRunning(true);
 // quero que comece a contar a partir de 0 igual um cro
       Timer.setInterval(this, "updateTimer", () => {
-        const newTime = 0;
+        const newTime = new Date().getTime() - startTime;
         setCurrentTime(newTime);
       }, 10);
     }
