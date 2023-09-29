@@ -15,7 +15,30 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
+import { Dimensions } from "react-native";
 import * as Animatable from "react-native-animatable";
+
+const screenHeight = Dimensions.get("window").height;
+
+const calculateMarginTop = () => {
+  const screenHeight = Dimensions.get("window").height;
+  console.log("Altura da tela:", screenHeight);
+
+  // Defina porcentagens diferentes com base em breakpoints de altura de tela
+  if (screenHeight < 700) {
+    return "0%"; // Por exemplo, 5% para telas pequenas
+  } else if (screenHeight >= 700 && screenHeight < 720) {
+    return "1%"; // 10% para telas médias
+  } else if (screenHeight >= 720 && screenHeight < 740) {
+    return "3%"; // 10% para telas médias
+  }else if (screenHeight >= 740 && screenHeight < 760) {
+    return "7%"; // 10% para telas médias
+  }else if (screenHeight >= 760 && screenHeight < 780) {
+    return "11%"; // 10% para telas médias
+  }else {
+    return "15%"; // 15% para telas grandes (ou maiores)
+  }
+};
 
 const ProfileScreen = () => {
   // Estado inicial dos dados do usuário
@@ -429,11 +452,11 @@ const styles = StyleSheet.create({
   profileImageContainer: {
     position: "relative",
     overflow: "hidden",
-    width: 150,
-    height: 150,
+    width: 140,
+    height: 140,
     borderRadius: 75,
-    marginTop: "0%",
-    marginBottom: "7%"
+    marginTop: calculateMarginTop(),
+    marginBottom: "4%"
   },
   profileImage: {
     width: "100%",
@@ -460,7 +483,7 @@ const styles = StyleSheet.create({
   inputTitle: {
     marginRight: "10%",
     marginLeft: "7%",
-    width: 80,
+    width: 95,
     paddingBottom: "1%",
     fontSize: 15,
     color: "black",
@@ -484,7 +507,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "50%",
-    height: 40,
+    height: 35,
     borderColor: "#ccc",
     borderRadius: 5,
     paddingHorizontal: 10,
@@ -510,7 +533,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#20183f",
     padding: 10,
     borderRadius: 5,
-    marginTop: "4%",
+    marginTop: "1%",
     width: "100%",
   },
   saveButtonText: {

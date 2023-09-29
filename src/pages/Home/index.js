@@ -19,6 +19,9 @@ import { ActivityIndicator } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
+
+
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -34,12 +37,6 @@ const HomeScreen = () => {
   const [userData, setUserData] = useState(initialUserData);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  // Pedir permissões e buscar dados iniciais quando o componente é montado
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
 
   // Buscar dados do usuário
   const fetchUserData = async () => {
@@ -85,9 +82,14 @@ const HomeScreen = () => {
     return imc.toFixed(2);
   }
 
-
   const IMC = calculcarIMC();
 
+  // Use o useFocusEffect para buscar os dados do usuário quando a tela for focada
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchUserData();
+    }, [])
+  );
 
 
 
@@ -193,6 +195,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 9999,
+  },
+  whiteBox: {
+    backgroundColor: "#FFFFFF",
+    padding: 60,
+    borderRadius: 10,
+    elevation: 10, // para Android
+    //shadowColor, shadowOffset, shadowOpacity, shadowRadius // para iOS se necessário
   },
   container: {
     alignItems: "center",
