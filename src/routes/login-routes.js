@@ -13,6 +13,8 @@ import Weight from "../pages/Start-Screens/Weight";
 import Dieta from "../pages/Dashboard-Screens/Dieta";
 import Cronometro from "../pages/Dashboard-Screens/Cronometro";
 import Metas from "../pages/Dashboard-Screens/Metas";
+import TreinosFirstScreen from "../pages/Treinos/Treino-FirstScreen";
+import TreinosFrequency from "../pages/Treinos/Treinos-Frequency";
 
 const Stack = createStackNavigator();
 
@@ -82,6 +84,16 @@ export default function Routes(){
             <Stack.Screen
             name="Metas"
             component={Metas}
+            options={{headerShown: false}}
+            />
+            <Stack.Screen
+            name="TreinosFirstScreen"
+            component={TreinosFirstScreen}
+            options={{headerShown: false}}
+            />
+            <Stack.Screen
+            name="TreinosFrequency"
+            component={TreinosFrequency}
             options={{headerShown: false}}
             />
             
