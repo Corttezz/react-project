@@ -45,6 +45,9 @@ const HomeScreen = () => {
       const userId = await AsyncStorage.getItem("userId");
       const token = await AsyncStorage.getItem("userToken");
 
+      console.log("userId", userId);
+      console.log("token", token);
+
       const response = await axios.get(
         `https://backend-server-inteligym.azurewebsites.net/getUserData/${userId}`,
         {

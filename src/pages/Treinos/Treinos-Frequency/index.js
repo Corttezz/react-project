@@ -13,6 +13,8 @@ const Frequency = () => {
   const [showWarning, setShowWarning] = useState(false); // Estado para mostrar o aviso
   const [loading, setLoading] = useState(false);
 
+  
+
   return (
     <View style={styles.title}>
       <View style={styles.headerContainer}>
@@ -44,6 +46,7 @@ const Frequency = () => {
                 onPress={() => {
                   setSelectedGoal("1 vez");
                   setShowWarning(false);
+                  console.log(selectedGoal);
                 }}
               >
                 <Text style={styles.goalText}>1 vez</Text>
@@ -56,6 +59,7 @@ const Frequency = () => {
                 onPress={() => {
                   setSelectedGoal("2 vezes");
                   setShowWarning(false);
+                  console.log(selectedGoal);
                 }}
               >
                 <Text style={styles.goalText}>2 vezes</Text>
