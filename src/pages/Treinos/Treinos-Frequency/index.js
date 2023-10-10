@@ -16,12 +16,11 @@ const Frequency = () => {
   const [loading, setLoading] = useState(false);
 
   const updateGoalInDatabase = async () => {
-    setLoading(true);
     if (!selectedGoal) {
       setShowWarning(true); // Mostra o aviso
       return;
     }
-
+    setLoading(true);
     try {
 
       const userId = await AsyncStorage.getItem('userId');
@@ -189,18 +188,20 @@ const Frequency = () => {
           </Animatable.View>
 
          
+    
+          <TouchableOpacity
+            onPress={updateGoalInDatabase}
+            style={styles.montarTreinoButton}
+          >
+            <Text style={styles.buttonText}>CONTINUAR</Text>
+            
+          </TouchableOpacity>
           {showWarning && (
             <Text style={styles.warningText}>
               Por favor, selecione um objetivo!
             </Text>
           )}
 
-          <TouchableOpacity
-            onPress={updateGoalInDatabase}
-            style={styles.montarTreinoButton}
-          >
-            <Text style={styles.buttonText}>CONTINUAR</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -337,6 +338,7 @@ const styles = StyleSheet.create({
   },
   warningText: {
     color: "red",
+    top: "-40%",
     fontSize: 16,
     fontFamily: "Poppins_400Regular",
     textAlign: "center",
@@ -348,6 +350,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   iconContainer: {
+    top: "4%",
     flex: 1,
     justifyContent: "center",
   },
@@ -357,7 +360,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 20,
     width: 200,
-    top: "-30%",
+    top: "-20%",
   },
   buttonText: {
     color: "#F2F2F2",
