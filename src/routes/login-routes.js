@@ -16,6 +16,7 @@ import Metas from "../pages/Dashboard-Screens/Metas";
 import TreinosFirstScreen from "../pages/Treinos/Treino-FirstScreen";
 import TreinosFrequency from "../pages/Treinos/Treinos-Frequency";
 import TreinosObjective from "../pages/Treinos/Treinos-Objective";
+import TreinosParteCorpo from "../pages/Treinos/Treino-ParteCorpo";
 
 const Stack = createStackNavigator();
 
@@ -100,6 +101,11 @@ export default function Routes(){
             <Stack.Screen
             name="TreinosObjective"
             component={TreinosObjective}
+            options={{headerShown: false}}
+            />
+            <Stack.Screen
+            name="TreinosParteCorpo"
+            component={TreinosParteCorpo}
             options={{headerShown: false}}
             />
             

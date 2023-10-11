@@ -31,11 +31,14 @@ const Objective = () => {
     try {
       const userId = await AsyncStorage.getItem("userId");
       const token = await AsyncStorage.getItem("userToken");
+      console.log("userId", userId);
+      console.log("token", token);
+      console.log("selectedGoal", selectedGoal);
 
       const response = await axios.put(
-        `https://backend-server-inteligym.azurewebsites.net/updateFrequencia/${userId}`,
+        `https://backend-server-inteligym.azurewebsites.net/updateObjetivo/${userId}`,
         {
-          frequencia: selectedGoal,
+          objetivo: selectedGoal,
         },
         {
           headers: {
@@ -48,7 +51,7 @@ const Objective = () => {
         console.log("deu certo");
         console.log(response.data);
 
-        navigation.navigate("TreinosObjective");
+        navigation.navigate("TreinosParteCorpo");
       } else {
         console.error("Erro ao atualizar o objetivo.");
       }
@@ -152,6 +155,7 @@ const Objective = () => {
                 ]}
                 onPress={() => {
                   setSelectedGoal(goal);
+                  console.log(selectedGoal);
                   setShowWarning(false); // Esconde o aviso quando um objetivo é selecionado
                 }}
               >

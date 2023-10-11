@@ -9,7 +9,7 @@ import * as Animatable from "react-native-animatable";
 import { ActivityIndicator } from "react-native-paper";
 
 
-const Frequency = () => {
+const ParteCorpo = () => {
   const navigation = useNavigation();
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [showWarning, setShowWarning] = useState(false); // Estado para mostrar o aviso
@@ -70,7 +70,7 @@ const Frequency = () => {
           name="arrow-back-outline"
           onPress={() => navigation.navigate("TreinosFirstScreen")}
         />
-        <Text style={styles.titleText}> Frequência </Text>
+        <Text style={styles.titleText}> Parte do Corpo </Text>
       </View>
       <View style={styles.container}>
         <View style={styles.description}>
@@ -371,4 +371,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Frequency;
+export default ParteCorpo;
