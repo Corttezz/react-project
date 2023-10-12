@@ -20,6 +20,48 @@ const Objective = () => {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState(initialUserData);
 
+  const updateGoalInDatabase1 = async () => {
+    setLoading(true);
+    if (!selectedGoal) {
+      setShowWarning(true); // Mostra o aviso
+      return;
+    }
+    setLoading(true);
+
+    try {
+      const userId = await AsyncStorage.getItem("userId");
+      const token = await AsyncStorage.getItem("userToken");
+      console.log("userId", userId);
+      console.log("token", token);
+      console.log("selectedGoal", selectedGoal);
+
+      const response = await axios.put(
+        `https://backend-server-inteligym.azurewebsites.net/updateGoal/${userId}`,
+        {
+          goal: selectedGoal,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("deu certo");
+        console.log(response.data);
+
+        navigation.navigate("TreinosParteCorpo");
+      } else {
+        console.error("Erro ao atualizar o objetivo.");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer a solicitação:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const updateGoalInDatabase = async () => {
     setLoading(true);
     if (!selectedGoal) {
@@ -48,6 +90,7 @@ const Objective = () => {
       );
 
       if (response.status === 200) {
+        updateGoalInDatabase1();
         console.log("deu certo");
         console.log(response.data);
 
@@ -299,7 +342,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 20,
-    top: "17%",
+    top: "14%",
   },
   
   montarTreinoButton: {
@@ -308,7 +351,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 20,
     width: 200,
-    top: "1%",
+    top: "-2%",
   },
   buttonText: {
     color: "#F2F2F2",

@@ -28,9 +28,9 @@ const ParteCorpo = () => {
       const token = await AsyncStorage.getItem("userToken");
 
       const response = await axios.put(
-        `https://backend-server-inteligym.azurewebsites.net/updateFrequencia/${userId}`,
+        `https://backend-server-inteligym.azurewebsites.net/updateParteCorpo/${userId}`,
         {
-          frequencia: selectedGoal,
+          parteCorpo: selectedGoal,
         },
         {
           headers: {
@@ -43,7 +43,7 @@ const ParteCorpo = () => {
         console.log("deu certo");
         console.log(response.data);
 
-        navigation.navigate("TreinosObjective");
+        navigation.navigate("Treinos");
       } else {
         console.error("Erro ao atualizar o objetivo.");
       }
@@ -68,15 +68,17 @@ const ParteCorpo = () => {
         <Ionicons
           style={styles.backIcon}
           name="arrow-back-outline"
-          onPress={() => navigation.navigate("TreinosFirstScreen")}
+          onPress={() => navigation.navigate("TreinosObjective")}
         />
         <Text style={styles.titleText}> Parte do Corpo </Text>
       </View>
       <View style={styles.container}>
         <View style={styles.description}>
           <Text style={styles.text}>
-            Vamos começar com a <Text style={styles.specialText}>frequência</Text> que você pretende realizar seus
-            treinos por semana. Selecione a melhor opção para você.
+            Nosso treino irá focar o <Text style={styles.specialText}>corpo inteiro</Text>, mas seria interessante
+            sabermos qual parte do corpo você gostaria de <Text style={styles.specialText}>focar</Text> mais.
+            Selecione a parte do corpo que você deseja dar um maior destaque:
+
           </Text>
 
           <Animatable.View
@@ -88,99 +90,99 @@ const ParteCorpo = () => {
               <TouchableOpacity
                 style={[
                   styles.goalButton,
-                  selectedGoal === 1 && styles.selectedGoalButton,
+                  selectedGoal === "Abdômen" && styles.selectedGoalButton,
                 ]}
                 onPress={() => {
-                  setSelectedGoal(1);
+                  setSelectedGoal("Abdômen");
                   setShowWarning(false);
                   console.log(selectedGoal);
                 }}
               >
-                <Text style={styles.goalText}>1 vez</Text>
+                <Text style={styles.goalText}>Abdômen</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
                   styles.goalButton,
-                  selectedGoal === 2 && styles.selectedGoalButton,
+                  selectedGoal === "Braços" && styles.selectedGoalButton,
                 ]}
                 onPress={() => {
-                  setSelectedGoal(2);
+                  setSelectedGoal("Braços");
                   setShowWarning(false);
                   console.log(selectedGoal);
                 }}
               >
-                <Text style={styles.goalText}>2 vezes</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.goalRow}>
-              <TouchableOpacity
-                style={[
-                  styles.goalButton,
-                  selectedGoal === 3 && styles.selectedGoalButton,
-                ]}
-                onPress={() => {
-                  setSelectedGoal(3);
-                  setShowWarning(false);
-                  console.log(selectedGoal);
-                }}
-              >
-                <Text style={styles.goalText}>3 vezes</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.goalButton,
-                  selectedGoal === 4 && styles.selectedGoalButton,
-                ]}
-                onPress={() => {
-                  setSelectedGoal(4);
-                  setShowWarning(false);
-                  console.log(selectedGoal);
-                }}
-              >
-                <Text style={styles.goalText}>4 vezes</Text>
+                <Text style={styles.goalText}>Braços</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.goalRow}>
               <TouchableOpacity
                 style={[
                   styles.goalButton,
-                  selectedGoal === 5 && styles.selectedGoalButton,
+                  selectedGoal === "Costas" && styles.selectedGoalButton,
                 ]}
                 onPress={() => {
-                  setSelectedGoal(5);
+                  setSelectedGoal("Costas");
                   setShowWarning(false);
                   console.log(selectedGoal);
                 }}
               >
-                <Text style={styles.goalText}>5 vezes</Text>
+                <Text style={styles.goalText}>Costas</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
                   styles.goalButton,
-                  selectedGoal === 6 && styles.selectedGoalButton,
+                  selectedGoal === "Glúteos" && styles.selectedGoalButton,
                 ]}
                 onPress={() => {
-                  setSelectedGoal(6);
+                  setSelectedGoal("Glúteos");
                   setShowWarning(false);
                   console.log(selectedGoal);
                 }}
               >
-                <Text style={styles.goalText}>6 vezes</Text>
+                <Text style={styles.goalText}>Glúteos</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.goalRow}>
+              <TouchableOpacity
+                style={[
+                  styles.goalButton,
+                  selectedGoal === "Ombros" && styles.selectedGoalButton,
+                ]}
+                onPress={() => {
+                  setSelectedGoal("Ombros");
+                  setShowWarning(false);
+                  console.log(selectedGoal);
+                }}
+              >
+                <Text style={styles.goalText}>Ombros</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.goalButton,
+                  selectedGoal === "Peito" && styles.selectedGoalButton,
+                ]}
+                onPress={() => {
+                  setSelectedGoal("Peito");
+                  setShowWarning(false);
+                  console.log(selectedGoal);
+                }}
+              >
+                <Text style={styles.goalText}>Peito</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.goalRow}>
               <TouchableOpacity
                 style={[
                   styles.goalButtonAllDays,
-                  selectedGoal === 7 && styles.selectedGoalButton,
+                  selectedGoal === "Pernas" && styles.selectedGoalButton,
                 ]}
                 onPress={() => {
-                  setSelectedGoal(7);
+                  setSelectedGoal("Pernas");
                   setShowWarning(false);
                   console.log(selectedGoal);
                 }}
               >
-                <Text style={styles.goalText}>Todos os dias</Text>
+                <Text style={styles.goalText}>Pernas</Text>
               </TouchableOpacity>
               
               
@@ -275,7 +277,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_700Bold",
   },
   goalRow: {
-    top: "-30%",
+    top: "-25%",
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10,

@@ -16,7 +16,6 @@ const Frequency = () => {
   const [loading, setLoading] = useState(false);
 
   const updateGoalInDatabase = async () => {
-    setLoading(true);
     if (!selectedGoal) {
       setShowWarning(true); // Mostra o aviso
       return;
