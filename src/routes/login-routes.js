@@ -17,6 +17,7 @@ import TreinosFirstScreen from "../pages/Treinos/Treino-FirstScreen";
 import TreinosFrequency from "../pages/Treinos/Treinos-Frequency";
 import TreinosObjective from "../pages/Treinos/Treinos-Objective";
 import TreinosParteCorpo from "../pages/Treinos/Treino-ParteCorpo";
+import TreinoGerado from "../pages/Treinos/Treino-Gerado";
 
 const Stack = createStackNavigator();
 
@@ -106,6 +107,11 @@ export default function Routes(){
             <Stack.Screen
             name="TreinosParteCorpo"
             component={TreinosParteCorpo}
+            options={{headerShown: false}}
+            />
+            <Stack.Screen
+            name="TreinoGerado"
+            component={TreinoGerado}
             options={{headerShown: false}}
             />
             

@@ -11,26 +11,32 @@ import { ActivityIndicator } from "react-native-paper";
 
 const ParteCorpo = () => {
   const navigation = useNavigation();
-  const [selectedGoal, setSelectedGoal] = useState(null);
   const [showWarning, setShowWarning] = useState(false); // Estado para mostrar o aviso
   const [loading, setLoading] = useState(false);
+  const [userTreino, setUserTreino] = useState(initialTreinoData);
+  const [exerciciosBracos, setExerciciosBracos] = useState(Exercicios_Bracos);
+ 
+    const initialTreinoData = {
+        frequencia: "",
+        objetivo: "",
+        dias_treino: "",
+        parte_corpo: "",
+        firstTreino: "",
+        };
 
-  const updateGoalInDatabase = async () => {
-    if (!selectedGoal) {
-      setShowWarning(true); // Mostra o aviso
-      return;
+    const Exercicios_Bracos = {
+        nome: "",
+        url: "",
     }
-    setLoading(true);
 
+const getUserTreino = async () => {
     try {
+      setLoading(true);
       const userId = await AsyncStorage.getItem("userId");
       const token = await AsyncStorage.getItem("userToken");
 
-      const response = await axios.put(
-        `https://backend-server-inteligym.azurewebsites.net/updateParteCorpo/${userId}`,
-        {
-          parteCorpo: selectedGoal,
-        },
+      const response = await axios.get(
+        `http://192.168.15.31:3000/getUserTreino/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -39,19 +45,88 @@ const ParteCorpo = () => {
       );
 
       if (response.status === 200) {
-        console.log("deu certo");
-        console.log(response.data);
-
-        navigation.navigate("TreinoGerado");
+        updateStateWithUserTreino(response.data);
+      
       } else {
-        console.error("Erro ao atualizar o objetivo.");
+        console.error("Erro ao buscar os dados do usuário.");
       }
     } catch (error) {
-      console.error("Erro ao fazer a solicitação:", error);
+      console.error("Erro na solicitação:", error);
     } finally {
       setLoading(false);
     }
   };
+
+
+  const getExerciciosBracos = async () => {
+    try {
+      setLoading(true);
+      const userId = await AsyncStorage.getItem("userId");
+      const token = await AsyncStorage.getItem("userToken");
+
+      const response = await axios.get(
+        `http://192.168.15.31:3000/getExerciciosBracos/${userId}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        updateExerciciosBracos(response.data);
+
+      } else {
+        console.error("Erro ao buscar os dados do usuário.");
+      }
+    } catch (error) {
+      console.error("Erro na solicitação:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  const updateStateWithUserTreino = (data) => {
+    setUserTreino({
+      ...userTreino,
+      frequencia: data.frequencia,
+      objetivo: data.objetivo,
+      dias_treino: data.dias_treino,
+      parte_corpo: data.parte_corpo,
+      firstTreino: data.firstTreino,
+    });
+  }
+
+  const updateExerciciosBracos = (data) => {
+    setExerciciosBracos({
+      ...exerciciosBracos,
+      nome: data.nome,
+      url: data.url,
+    });
+  }
+
+   
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getUserTreino();
+      getExerciciosBracos();
+    }, [])
+  );
+
+  const montarTreino = () => {
+    if (userTreino.frequencia === 5 && userTreino.parte_corpo === "Costas") {
+      console.log("sim");
+    } else {
+      console.log("errou");
+    }
+  }
+
+
+montarTreino();
+
   
 
   return (
@@ -67,132 +142,20 @@ const ParteCorpo = () => {
         <Ionicons
           style={styles.backIcon}
           name="arrow-back-outline"
-          onPress={() => navigation.navigate("TreinosObjective")}
+          onPress={() => navigation.navigate("TreinosParteCorpo")}
         />
-        <Text style={styles.titleText}> Parte do Corpo </Text>
+        <Text style={styles.titleText}> Treino Completo </Text>
       </View>
       <View style={styles.container}>
         <View style={styles.description}>
           <Text style={styles.text}>
-            Nosso treino irá focar o <Text style={styles.specialText}>corpo inteiro</Text>, mas seria interessante
-            sabermos qual parte do corpo você gostaria de <Text style={styles.specialText}>focar</Text> mais.
-            Selecione a parte do corpo que você deseja dar um maior destaque:
-
+            Aqui está o seu treino completo, com todos os exercícios que você
+            precisa para alcançar seu objetivo.
           </Text>
-
-          <Animatable.View
-            delay={200}
-            animation="fadeInRight"
-            style={styles.iconContainer}
-          >
-            <View style={styles.goalRow}>
-              <TouchableOpacity
-                style={[
-                  styles.goalButton,
-                  selectedGoal === "Abdômen" && styles.selectedGoalButton,
-                ]}
-                onPress={() => {
-                  setSelectedGoal("Abdômen");
-                  setShowWarning(false);
-                  console.log(selectedGoal);
-                }}
-              >
-                <Text style={styles.goalText}>Abdômen</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.goalButton,
-                  selectedGoal === "Braços" && styles.selectedGoalButton,
-                ]}
-                onPress={() => {
-                  setSelectedGoal("Braços");
-                  setShowWarning(false);
-                  console.log(selectedGoal);
-                }}
-              >
-                <Text style={styles.goalText}>Braços</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.goalRow}>
-              <TouchableOpacity
-                style={[
-                  styles.goalButton,
-                  selectedGoal === "Costas" && styles.selectedGoalButton,
-                ]}
-                onPress={() => {
-                  setSelectedGoal("Costas");
-                  setShowWarning(false);
-                  console.log(selectedGoal);
-                }}
-              >
-                <Text style={styles.goalText}>Costas</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.goalButton,
-                  selectedGoal === "Glúteos" && styles.selectedGoalButton,
-                ]}
-                onPress={() => {
-                  setSelectedGoal("Glúteos");
-                  setShowWarning(false);
-                  console.log(selectedGoal);
-                }}
-              >
-                <Text style={styles.goalText}>Glúteos</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.goalRow}>
-              <TouchableOpacity
-                style={[
-                  styles.goalButton,
-                  selectedGoal === "Ombros" && styles.selectedGoalButton,
-                ]}
-                onPress={() => {
-                  setSelectedGoal("Ombros");
-                  setShowWarning(false);
-                  console.log(selectedGoal);
-                }}
-              >
-                <Text style={styles.goalText}>Ombros</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.goalButton,
-                  selectedGoal === "Peito" && styles.selectedGoalButton,
-                ]}
-                onPress={() => {
-                  setSelectedGoal("Peito");
-                  setShowWarning(false);
-                  console.log(selectedGoal);
-                }}
-              >
-                <Text style={styles.goalText}>Peito</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.goalRow}>
-              <TouchableOpacity
-                style={[
-                  styles.goalButtonAllDays,
-                  selectedGoal === "Pernas" && styles.selectedGoalButton,
-                ]}
-                onPress={() => {
-                  setSelectedGoal("Pernas");
-                  setShowWarning(false);
-                  console.log(selectedGoal);
-                }}
-              >
-                <Text style={styles.goalText}>Pernas</Text>
-              </TouchableOpacity>
-              
-              
-            </View>
-            
-          </Animatable.View>
-
          
     
           <TouchableOpacity
-            onPress={updateGoalInDatabase}
+           
             style={styles.montarTreinoButton}
           >
             <Text style={styles.buttonText}>CONTINUAR</Text>
@@ -340,7 +303,7 @@ const styles = StyleSheet.create({
   },
   warningText: {
     color: "red",
-    top: "-34%",
+    top: "-40%",
     fontSize: 16,
     fontFamily: "Poppins_400Regular",
     textAlign: "center",
