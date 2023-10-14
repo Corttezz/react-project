@@ -10,24 +10,24 @@ import { ActivityIndicator } from "react-native-paper";
 
 
 const ParteCorpo = () => {
+  const initialTreinoData = {
+      frequencia: "",
+      objetivo: "",
+      dias_treino: "",
+      parte_corpo: "",
+      firstTreino: "",
+      };
+
+  const Exercicios_Bracos = {
+      nome: "",
+      url: "",
+  }
   const navigation = useNavigation();
   const [showWarning, setShowWarning] = useState(false); // Estado para mostrar o aviso
   const [loading, setLoading] = useState(false);
   const [userTreino, setUserTreino] = useState(initialTreinoData);
   const [exerciciosBracos, setExerciciosBracos] = useState(Exercicios_Bracos);
  
-    const initialTreinoData = {
-        frequencia: "",
-        objetivo: "",
-        dias_treino: "",
-        parte_corpo: "",
-        firstTreino: "",
-        };
-
-    const Exercicios_Bracos = {
-        nome: "",
-        url: "",
-    }
 
 const getUserTreino = async () => {
     try {
