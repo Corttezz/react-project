@@ -10,24 +10,24 @@ import { ActivityIndicator } from "react-native-paper";
 
 
 const ParteCorpo = () => {
+  const initialTreinoData = {
+      frequencia: "",
+      objetivo: "",
+      dias_treino: "",
+      parte_corpo: "",
+      firstTreino: "",
+      };
+
+  const Exercicios_Bracos = {
+      nome: "",
+      url: "",
+  }
   const navigation = useNavigation();
   const [showWarning, setShowWarning] = useState(false); // Estado para mostrar o aviso
   const [loading, setLoading] = useState(false);
   const [userTreino, setUserTreino] = useState(initialTreinoData);
   const [exerciciosBracos, setExerciciosBracos] = useState(Exercicios_Bracos);
  
-    const initialTreinoData = {
-        frequencia: "",
-        objetivo: "",
-        dias_treino: "",
-        parte_corpo: "",
-        firstTreino: "",
-        };
-
-    const Exercicios_Bracos = {
-        nome: "",
-        url: "",
-    }
 
 const getUserTreino = async () => {
     try {
@@ -36,7 +36,7 @@ const getUserTreino = async () => {
       const token = await AsyncStorage.getItem("userToken");
 
       const response = await axios.get(
-        `http://192.168.15.31:3000/getUserTreino/${userId}`,
+        `https://backend-server-inteligym.azurewebsites.net/getUserTreino/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -65,17 +65,17 @@ const getUserTreino = async () => {
       const token = await AsyncStorage.getItem("userToken");
 
       const response = await axios.get(
-        `http://192.168.15.31:3000/getExerciciosBracos/${userId}`,
+        `https://backend-server-inteligym.azurewebsites.net/getExerciciosBracos`,
 
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
-      );
+             );
 
       if (response.status === 200) {
-        updateExerciciosBracos(response.data);
+        console.log("oi", response.data);
 
       } else {
         console.error("Erro ao buscar os dados do usuário.");
@@ -88,6 +88,7 @@ const getUserTreino = async () => {
   };
 
 
+
   const updateStateWithUserTreino = (data) => {
     setUserTreino({
       ...userTreino,
@@ -98,6 +99,8 @@ const getUserTreino = async () => {
       firstTreino: data.firstTreino,
     });
   }
+
+console.log(userTreino.frequencia);
 
   const updateExerciciosBracos = (data) => {
     setExerciciosBracos({
@@ -116,17 +119,17 @@ const getUserTreino = async () => {
     }, [])
   );
 
-  const montarTreino = () => {
-    if (userTreino.frequencia === 5 && userTreino.parte_corpo === "Costas") {
-      console.log("sim");
-    } else {
-      console.log("errou");
-    }
-  }
+//   const montarTreino = () => {
+//     if (userTreino.frequencia === 5 && userTreino.parte_corpo === "Costas") {
+//       console.log("sim");
+//     } else {
+//       console.log("errou");
+//     }
+//   }
 
+// montarTreino();
 
-montarTreino();
-
+console.log(exerciciosBracos.nome);
   
 
   return (
